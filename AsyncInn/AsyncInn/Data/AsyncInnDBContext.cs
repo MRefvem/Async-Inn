@@ -14,6 +14,10 @@ namespace AsyncInn.Data
 
         }
 
+        /// <summary>
+        /// Seed initial data into database
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Hotel>().HasData(
