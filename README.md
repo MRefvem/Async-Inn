@@ -6,6 +6,10 @@
 ## Description
 The owners of “Async Inn” have approached you with plans to renovate their hotel chain. Currently they are tracking all the different locations and rooms in spreadsheets and binders. They currently have about 10 binders full of paperwork that consists of the difference between each location and the pricing for each room. The amount of time and paperwork it takes to manage the rooms and locations is costing the company both time and money. They are currently looking for a “better way” to maintain their business model.
 
+## Architecture
+
+This app is an API containing data about hotels stored in a Database. Originally this was accomplished by having the controllers depend on the db context but in a later version was moved over to using interfaces instead. This was done because it allows the way for information to be stored and accessed from the database to be more dynamic in later versions (having a narrower mode of access could cause problems later). Using interfaces allows our classes to follow directions rather than creating directions themselves. This makes future changes to the app easier later.
+
 ---
 
 ### Getting Started
@@ -36,6 +40,8 @@ Then select and open ```Async-Inn.sln```
 ---
 
 ### Change Log 
+3.1: *README updated, .gitignore added* - 22 Jul 2020
+3.0: *Refactored, Hotels, Rooms and Amenities controllers to depend on an interface rather than the db context. Built an interface for each of the controllers that contain the required method signatures for all four CRUD operations to the database directly. Updated each of the controllers to inject the interface rather than the DBContext. Create a service for each of the controllers that implement the appropriate interface.* - 22 Jul 2020
 2.2: *README updated, includes revised ERD* - 21 Jul 2020  
 2.1: *All feature tasks complete, was able to replicate all CRUD operations in Postman* - 21 Jul 2020  
 2.0: *Async Inn Management System, application specifications: Startup File, Simple Models & the Database, Seeded Data* - 21 Jul 2020  
