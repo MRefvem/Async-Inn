@@ -65,6 +65,36 @@ namespace AsyncInn.Controllers
             return CreatedAtAction("GetRoom", new { id = room.Id }, room);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <param name="amenityId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("{roomId}/{amenityId}")]
+        // POST: {roomId}/{amenityId}
+        // Model Binding
+        public async Task<IActionResult> AddAmenityToRoom(int roomId, int amenityId)
+        {
+            await _room.AddAmenity(amenityId, roomId);
+            return Ok();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <param name="amenityId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("{roomId}/{amenityId}")]
+        public async Task<IActionResult> RemoveAmenityfromRoom(int roomId, int amenityId)
+        {
+            await _room.RemoveAmenityFromRoom(roomId, amenityId);
+            return Ok();
+        }
+
         // DELETE: api/Rooms/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Room>> DeleteRoom(int id)

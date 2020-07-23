@@ -23,5 +23,7 @@ namespace AsyncInn.Models.Interfaces
         // Delete
         Task Delete(int Id);
 
+        Task AddRoom(int hotelId, int roomId);
+
     }
 }

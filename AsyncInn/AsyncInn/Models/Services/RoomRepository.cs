@@ -40,6 +40,12 @@ namespace AsyncInn.Models.Services
         {
             // look in the db on the room table where the id is equal to the one brought in as an argument
             Room room = await _context.Rooms.FindAsync(id);
+
+            // include all the RoomAmenities that the room has
+            var roomAmenities = await _context.RoomAmenities.Where(x => x.RoomId == id)
+                                                            .Include(x => x.Amenity)
+                                                            .ToListAsync();
+            room.RoomAmenities = roomAmenities;
             return room;
         }
 
@@ -56,6 +62,33 @@ namespace AsyncInn.Models.Services
             await _context.SaveChangesAsync();
 
             return room;
+        }
+
+        // Add a room and amenity together
+        public async Task AddAmenity(int roomId, int amenityId)
+        {
+            RoomAmenities roomAmenities = new RoomAmenities()
+            {
+                RoomId = roomId,
+                AmenityId = amenityId
+            };
+
+            _context.Entry(roomAmenities).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Removes a specified amenity from a specific room
+        /// </summary>
+        /// <param name="roomId">unique identifier of the room</param>
+        /// <param name="amenityId">unique identifier of the amenity</param>
+        /// <returns>task of completion</returns>
+        public async Task RemoveAmenityFromRoom(int roomId, int amenityId)
+        {
+            // Look in the RoomAmenities table for the entry that matches the roomId and the amenityId
+            var result = _context.RoomAmenities.FirstOrDefault(x => x.RoomId == roomId && x.AmenityId == amenityId);
+            _context.Entry(result).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
     }
 }

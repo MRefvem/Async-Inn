@@ -31,7 +31,9 @@ namespace AsyncInn
         {
             // this is where all of our dependencies are going to live
             // enable the use of using controllers within the MVC convention
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
 
             // Register with the app that the Db exists and what options to use for it
             services.AddDbContext<AsyncInnDbContext>(options =>
@@ -46,6 +48,7 @@ namespace AsyncInn
             services.AddTransient<IHotel, HotelRepository>();
             services.AddTransient<IRoom, RoomRepository>();
             services.AddTransient<IAmenity, AmenityRepository>();
+            services.AddTransient<IHotelRoom, HotelRoomRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +64,7 @@ namespace AsyncInn
             app.UseEndpoints(endpoints =>
             {
                 // Set our default routing for our request
-                endpoints.MapControllerRoute("default", "{controller-Home}/{action-Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
