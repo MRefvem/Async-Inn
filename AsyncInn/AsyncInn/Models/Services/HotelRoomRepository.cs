@@ -17,6 +17,11 @@ namespace AsyncInn.Models.Services
             _context = context;
         }
 
+        /// <summary>
+        /// Create - allows us to create a new hotel room
+        /// </summary>
+        /// <param name="hotelRoom">the hotel room object we want created</param>
+        /// <returns>the completed task of creating the hotel room</returns>
         public async Task<HotelRoom> Create(HotelRoom hotelRoom)
         {
             // When I have a room, I want to add them to the DB
@@ -27,6 +32,12 @@ namespace AsyncInn.Models.Services
             return hotelRoom;
         }
 
+        /// <summary>
+        /// Delete - allows us to delete a room from a hotel
+        /// </summary>
+        /// <param name="hotelId">the unique identifier of the hotel</param>
+        /// <param name="roomNumber">the unique identifier of the hotel room we're trying to delete</param>
+        /// <returns>the completed task - hotel room no longer exists</returns>
         public async Task Delete(int hotelId, int roomNumber)
         {
             HotelRoom hotelRoom = await GetHotelRoom(hotelId, roomNumber);
@@ -35,6 +46,12 @@ namespace AsyncInn.Models.Services
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// GetHotelRoom - allows us to see an individual room of an individual hotel
+        /// </summary>
+        /// <param name="hotelId">the unique identifier of the hotel we want to look at</param>
+        /// <param name="roomNumber">the unique identifier of the individual room we want to see</param>
+        /// <returns>the completed task showing the room</returns>
         public async Task<HotelRoom> GetHotelRoom(int hotelId, int roomNumber)
         {
             // look in the db on the room table where the id is equal to the one brought in as an argument
@@ -48,6 +65,11 @@ namespace AsyncInn.Models.Services
             return hotelRoom;
         }
 
+        /// <summary>
+        /// GetAllHotelRooms - allows us to see a lise of all of the rooms that a hotel has
+        /// </summary>
+        /// <param name="hotelId">the unique ID of the hotel we want to see rooms for</param>
+        /// <returns>a list of all the rooms that hotel has</returns>
         public async Task<List<HotelRoom>> GetAllHotelRooms(int hotelId)
         {
             var hotelRooms = await _context.HotelRooms.Where(x => x.HotelId == hotelId).ToListAsync();
@@ -55,6 +77,11 @@ namespace AsyncInn.Models.Services
             return hotelRooms;
         }
 
+        /// <summary>
+        /// Update - allows us the ability to update features of an individual hotel room
+        /// </summary>
+        /// <param name="hotelRoom">the hotel room object that we want to modify</param>
+        /// <returns>the modified hotel room object</returns>
         public async Task<HotelRoom> Update(HotelRoom hotelRoom)
         {
             _context.Entry(hotelRoom).State = EntityState.Modified;
