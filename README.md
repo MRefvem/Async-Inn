@@ -37,9 +37,33 @@ Then select and open ```Async-Inn.sln```
 #### Entity Relationship Diagram (ERD) (Original - 20 Jul 2020)
 ![Entity Relationship Diagram](assets/ERD.png)
 
-### Detail of Routes
+### Amenities Routes
+- GET: api/Amenities - Get a list of all amenities
+- GET: api/Amenities/{id} - Get an amenity by ID
+- PUT: api/Amenities/{id} - Update an amenity by ID
+- POST: api/Amenities - Create a new amenity
+- DELETE: api/Amenities/{id} - Delete an amenity by ID
 
+### Hotels Routes
+- GET: api/Hotels - Get a list of all hotels
+- GET: api/Hotels/{hotelId} - Get a hotel by ID
+- PUT: api/Hotels/{hotelId} - Update a hotel by ID
+- POST: api/Hotels - Create a new hotel
+- POST: {hotelId}/{roomId}/Rooms - Create a new hotel room
+- GET: api/Hotels/{hotelId}/Rooms/{roomNumber} - Get details on a specific room
+- GET: api/Hotels/{hotelId}/Rooms - Get details on all rooms in a specific hotel
+- PUT: api/Hotels/{hotelId}/Rooms/{roomNumber} - Update room details
+- DELETE: api/Hotels/{hotelId}/Rooms/{roomNumber} - Delete a hotel room
+- DELETE: api/Hotels/{hotelId} - Delete a hotel
 
+### Rooms Routes
+- GET: api/Rooms - Get a list of all rooms
+- GET: api/Rooms/{id} - Get a room by ID
+- PUT: api/Rooms/{id} - Update a room by ID
+- POST: api/Rooms - Create a new room
+- POST: {roomId}/{amenityId} - Add an amenity to a room
+- DELETE: {roomId}/{amenityId} - Delete an amenity from a room
+- DELETE: {roomId} - Delete a room
 
 ---
 
