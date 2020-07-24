@@ -5,6 +5,7 @@ using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace AsyncInn.Models.Services
@@ -18,6 +19,11 @@ namespace AsyncInn.Models.Services
             _context = context;
         }
 
+        /// <summary>
+        /// Create - allows us to create a new hotel object
+        /// </summary>
+        /// <param name="hotel">the hotel object we want to create</param>
+        /// <returns>the new hotel object</returns>
         public async Task<Hotel> Create(Hotel hotel)
         {
             // When I have a hotel, I want to add them to the DB
@@ -28,6 +34,11 @@ namespace AsyncInn.Models.Services
             return hotel;
         }
 
+        /// <summary>
+        /// Delete - allows us to delete a hotel obejct
+        /// </summary>
+        /// <param name="Id">the unique identifier of the hotel we want to delete</param>
+        /// <returns>the deleted hotel object</returns>
         public async Task Delete(int Id)
         {
             Hotel hotel = await GetHotel(Id);
@@ -37,26 +48,58 @@ namespace AsyncInn.Models.Services
 
         }
 
+        /// <summary>
+        /// GetHotel - allows us to get details on a single hotel
+        /// </summary>
+        /// <param name="id">the unique identifier of the hotel we want to select</param>
+        /// <returns>details on that hotel</returns>
         public async Task<Hotel> GetHotel(int id)
         {
             // look in the db on the hotels table where the id is equal to the one brought in as an argument
-            Hotel hotel = await _context.Hotels.FindAsync(id);
+            Hotel hotel = await _context.Hotels.Include(x => x.HotelRooms).FirstOrDefaultAsync(x => x.Id == id);
             return hotel;
         }
 
+        /// <summary>
+        /// GetHotels - allows us to get a list of all the hotels
+        /// </summary>
+        /// <returns>a list of all the hotels</returns>
         public async Task<List<Hotel>> GetHotels()
         {
-            var hotels = await _context.Hotels.ToListAsync();
+            var hotels = await _context.Hotels.Include(x => x.HotelRooms).ToListAsync();
 
             return hotels;
         }
 
+        /// <summary>
+        /// Update - allows us to update details on a hotel
+        /// </summary>
+        /// <param name="hotel">the hotel object we want to modify</param>
+        /// <returns>the modified hotel obejct</returns>
         public async Task<Hotel> Update(Hotel hotel)
         {
             _context.Entry(hotel).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return hotel;
+        }
+
+        /// <summary>
+        /// AddRoom - allows us to add a room to a hotel
+        /// </summary>
+        /// <param name="hotelId">the unique identifier of the hotel we want to add a room to</param>
+        /// <param name="roomId">the id number associated with our new room</param>
+        /// <returns>the completed task - a new room was created</returns>
+        public async Task AddRoom(int hotelId, int roomId)
+        {
+            HotelRoom hotelRoom = new HotelRoom()
+            {
+                HotelId = hotelId,
+                RoomId = roomId
+            };
+
+            _context.Entry(hotelRoom).State = EntityState.Added;
+            await _context.SaveChangesAsync();
         }
     }
 }

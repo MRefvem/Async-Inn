@@ -20,6 +20,11 @@ namespace AsyncInn.Data
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // this tells the db that RoomAmenities table has a combination composite key of the roomid and amenityid
+            modelBuilder.Entity<RoomAmenities>().HasKey(x => new { x.RoomId, x.AmenityId });
+            
+            modelBuilder.Entity<HotelRoom>().HasKey(x => new { x.HotelId, x.RoomNumber });
+
             modelBuilder.Entity<Hotel>().HasData(
                 new Hotel
                 {
@@ -100,5 +105,7 @@ namespace AsyncInn.Data
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Amenity> Amenities { get; set; }
+        public DbSet<RoomAmenities> RoomAmenities { get; set; }
+        public DbSet<AsyncInn.Models.HotelRoom> HotelRooms { get; set; }
     }
 }

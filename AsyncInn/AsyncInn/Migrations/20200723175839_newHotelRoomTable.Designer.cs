@@ -3,14 +3,16 @@ using AsyncInn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AsyncInn.Migrations
 {
     [DbContext(typeof(AsyncInnDbContext))]
-    partial class AsyncInnDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200723175839_newHotelRoomTable")]
+    partial class newHotelRoomTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,7 +129,7 @@ namespace AsyncInn.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("HotelRooms");
+                    b.ToTable("HotelRoom");
                 });
 
             modelBuilder.Entity("AsyncInn.Models.Room", b =>
@@ -186,13 +188,13 @@ namespace AsyncInn.Migrations
             modelBuilder.Entity("AsyncInn.Models.HotelRoom", b =>
                 {
                     b.HasOne("AsyncInn.Models.Hotel", "Hotel")
-                        .WithMany("HotelRooms")
+                        .WithMany()
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AsyncInn.Models.Room", "Room")
-                        .WithMany("HotelRoom")
+                        .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -201,13 +203,13 @@ namespace AsyncInn.Migrations
             modelBuilder.Entity("AsyncInn.Models.RoomAmenities", b =>
                 {
                     b.HasOne("AsyncInn.Models.Amenity", "Amenity")
-                        .WithMany("RoomAmenities")
+                        .WithMany()
                         .HasForeignKey("AmenityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AsyncInn.Models.Room", "Room")
-                        .WithMany("RoomAmenities")
+                        .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
