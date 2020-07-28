@@ -65,9 +65,15 @@ Then select and open ```Async-Inn.sln```
 - DELETE: {roomId}/{amenityId} - Delete an amenity from a room
 - DELETE: {roomId} - Delete a room
 
+### Identity and how it's used in this Application
+Identity is the concept of creating user accounts and authentication. ASP.NET Core Framework has build in Identity tools that help keep user information safe when it is passed into a DataBase. Usernames and Passwords are sent in by the user and through a process known as Hashing the information is converted into abstract code that is all but impossible to descipher.
+
+This application has a class, ApplicationUser, that enables the application to take in user information and register an account that the user can login to later with their credentials.
+
 ---
 
 ### Change Log 
+6.0: *Created new class, ApplicationUser. Updated AsyncInnDBContext to read ApplicationUser and derive from Identity. Updated database to integrate Identity tables. Registered Identity into Startup file "services.AddIdentity...". Created an Account Controller and added both Register and Login actions. Confirmed that you can register a user successfully in the database. Confirmed that you can login with the credentials of an existing user.* - 28 Jul 2020
 5.0: *Added Data Transfer Objects (DTOs) for all four services. Updated all Controllers and Repositories to read from the DTOs.* - 27 Jul 2020
 4.0: *Built navigation properties and routes. Created new interfaces, services and tables for RoomAmenities and HotelRooms. Added the ability to add and remove amenities to a specific room. Satisfied CRUD requirements. README updated.* - 23 Jul 2020
 3.1: *README updated, .gitignore added* - 22 Jul 2020
