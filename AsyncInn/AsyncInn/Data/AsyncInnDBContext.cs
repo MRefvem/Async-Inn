@@ -1,4 +1,5 @@
 ﻿using AsyncInn.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AsyncInn.Data
 {
-    public class AsyncInnDbContext : DbContext
+    public class AsyncInnDbContext : IdentityDbContext<ApplicationUser>
     {
         public AsyncInnDbContext(DbContextOptions<AsyncInnDbContext> options) : base(options)
         {
@@ -20,6 +21,8 @@ namespace AsyncInn.Data
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // need to get the original behavior for our model override
+            base.OnModelCreating(modelBuilder);
             // this tells the db that RoomAmenities table has a combination composite key of the roomid and amenityid
             modelBuilder.Entity<RoomAmenities>().HasKey(x => new { x.RoomId, x.AmenityId });
             
