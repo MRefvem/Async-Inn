@@ -22,6 +22,11 @@ namespace AsyncInn.Controllers
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// Register - Method that allows a user to register an account in the DB
+        /// </summary>
+        /// <param name="register">RegisterDTO</param>
+        /// <returns>The completed action - registered user</returns>
         // api/account/register
         [HttpPost,Route("register")]
         public async Task<ActionResult> Register(RegisterDTO register)
@@ -52,6 +57,11 @@ namespace AsyncInn.Controllers
             // do something to put this into the database
         }
 
+        /// <summary>
+        /// Login - method allows the user to login to their account
+        /// </summary>
+        /// <param name="login">The credentials, email and password</param>
+        /// <returns>The completed action - user login or unsuccessful attempt</returns>
         [HttpPost, Route("Login")]
         public async Task<ActionResult> Login(LoginDTO login)
         {
