@@ -1,4 +1,5 @@
 ﻿using AsyncInn.Data;
+using AsyncInn.Models.DTOs;
 using AsyncInn.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
@@ -24,8 +25,20 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="hotel">the hotel object we want to create</param>
         /// <returns>the new hotel object</returns>
-        public async Task<Hotel> Create(Hotel hotel)
+        public async Task<HotelDTO> Create(HotelDTO hotel)
         {
+            // Convert the DTO to an actual entity
+
+            Hotel entity = new Hotel()
+            {
+                Id = hotel.Id,
+                Name = hotel.Name,
+                StreetAddress = hotel.StreetAddress,
+                City = hotel.City,
+                State = hotel.State,
+                Phone = hotel.Phone
+            };
+
             // When I have a hotel, I want to add them to the DB
             _context.Entry(hotel).State = Microsoft.EntityFrameworkCore.EntityState.Added;
             // The hotel gets saved here and then associated with an id
@@ -41,7 +54,7 @@ namespace AsyncInn.Models.Services
         /// <returns>the deleted hotel object</returns>
         public async Task Delete(int Id)
         {
-            Hotel hotel = await GetHotel(Id);
+            HotelDTO hotel = await GetHotel(Id);
 
             _context.Entry(hotel).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
             await _context.SaveChangesAsync();
@@ -53,22 +66,40 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="id">the unique identifier of the hotel we want to select</param>
         /// <returns>details on that hotel</returns>
-        public async Task<Hotel> GetHotel(int id)
+        public async Task<HotelDTO> GetHotel(int id)
         {
             // look in the db on the hotels table where the id is equal to the one brought in as an argument
-            Hotel hotel = await _context.Hotels.Include(x => x.HotelRooms).FirstOrDefaultAsync(x => x.Id == id);
-            return hotel;
+            var hotel = await _context.Hotels.Include(x => x.HotelRooms).FirstOrDefaultAsync(x => x.Id == id);
+
+            HotelDTO dto = new HotelDTO
+            {
+                Id = hotel.Id,
+                Name = hotel.Name,
+                StreetAddress = hotel.StreetAddress,
+                City = hotel.City,
+                State = hotel.State,
+                Phone = hotel.Phone
+            };
+
+            return dto;
         }
 
         /// <summary>
         /// GetHotels - allows us to get a list of all the hotels
         /// </summary>
         /// <returns>a list of all the hotels</returns>
-        public async Task<List<Hotel>> GetHotels()
+        public async Task<List<HotelDTO>> GetHotels()
         {
             var hotels = await _context.Hotels.Include(x => x.HotelRooms).ToListAsync();
 
-            return hotels;
+            List<HotelDTO> dtos = new List<HotelDTO>();
+
+            foreach (var hotel in hotels)
+            {
+                dtos.Add(await GetHotel(hotel.Id));
+            }
+
+            return dtos;
         }
 
         /// <summary>
