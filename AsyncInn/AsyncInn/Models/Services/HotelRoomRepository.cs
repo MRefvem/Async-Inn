@@ -86,7 +86,16 @@ namespace AsyncInn.Models.Services
                                                 .ThenInclude(x => x.Amenity)
                                                 .FirstOrDefaultAsync();
 
-            return room;
+            HotelRoomDTO dto = new HotelRoomDTO
+            {
+                HotelId = room.HotelId,
+                RoomNumber = room.RoomNumber,
+                Rate = room.Rate,
+                PetFriendly = room.PetFriendly,
+                RoomId = room.RoomId,
+            };
+
+            return dto;
         }
 
         /// <summary>
@@ -100,7 +109,14 @@ namespace AsyncInn.Models.Services
                                                         .Include(x => x.Room)
                                                         .ToListAsync();
 
-            return hotelRooms;
+            List<HotelRoomDTO> dtos = new List<HotelRoomDTO>();
+
+            foreach (var hotelRoom in hotelRooms)
+            {
+                dtos.Add(await GetHotelRoom(hotelRoom.HotelId, hotelRoom.RoomNumber));
+            }
+
+            return dtos;
         }
 
         /// <summary>
