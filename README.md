@@ -68,6 +68,7 @@ Then select and open ```Async-Inn.sln```
 ---
 
 ### Change Log 
+5.0: *Added Data Transfer Objects (DTOs) for all four services. Updated all Controllers and Repositories to read from the DTOs.* - 27 Jul 2020
 4.0: *Built navigation properties and routes. Created new interfaces, services and tables for RoomAmenities and HotelRooms. Added the ability to add and remove amenities to a specific room. Satisfied CRUD requirements. README updated.* - 23 Jul 2020
 3.1: *README updated, .gitignore added* - 22 Jul 2020
 3.0: *Refactored, Hotels, Rooms and Amenities controllers to depend on an interface rather than the db context. Built an interface for each of the controllers that contain the required method signatures for all four CRUD operations to the database directly. Updated each of the controllers to inject the interface rather than the DBContext. Create a service for each of the controllers that implement the appropriate interface.* - 22 Jul 2020
