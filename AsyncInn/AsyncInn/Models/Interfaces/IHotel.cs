@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncInn.Models.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace AsyncInn.Models.Interfaces
         /// </summary>
         /// <param name="hotel">the hotel object we want to create</param>
         /// <returns>the new hotel object</returns>
-        Task<Hotel> Create(Hotel hotel);
+        Task<HotelDTO> Create(HotelDTO hotel);
 
         /// <summary>
         /// AddRoom - allows us to add a room to a hotel
@@ -32,14 +33,14 @@ namespace AsyncInn.Models.Interfaces
         /// GetHotels - allows us to get a list of all the hotels
         /// </summary>
         /// <returns>a list of all the hotels</returns>
-        Task<List<Hotel>> GetHotels();
+        Task<List<HotelDTO>> GetHotels();
 
         /// <summary>
         /// GetHotel - allows us to get details on a single hotel
         /// </summary>
         /// <param name="id">the unique identifier of the hotel we want to select</param>
         /// <returns>details on that hotel</returns>
-        Task<Hotel> GetHotel(int id);
+        Task<HotelDTO> GetHotel(int id);
 
 
         // UPDATE
