@@ -59,19 +59,19 @@ namespace AsyncInn.Data
                 {
                     Id = 1,
                     Name = "Studio",
-                    Layout = 0
+                    Layout = Layout.Studio
                 },
                 new Room
                 {
                     Id = 2,
                     Name = "One Bedroom",
-                    Layout = 1
+                    Layout = Layout.OneBedroomSuite
                 },
                 new Room
                 {
                     Id = 3,
                     Name = "Two Bedroom",
-                    Layout = 2
+                    Layout = Layout.TwoBedroomSuite
                 }
                 );
             modelBuilder.Entity<Amenity>().HasData(

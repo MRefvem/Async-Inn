@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncInn.Models.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace AsyncInn.Models.Interfaces
         /// </summary>
         /// <param name="amenity">the amenity object we want to create</param>
         /// <returns>the new amenity object</returns>
-        Task<Amenity> Create(Amenity amenity);
+        Task<AmenityDTO> Create(AmenityDTO amenity);
 
 
         // READ
@@ -24,14 +25,14 @@ namespace AsyncInn.Models.Interfaces
         /// GetAmenities - allows us to get a list of all amenities
         /// </summary>
         /// <returns>a list of all amenities</returns>
-        Task<List<Amenity>> GetAmenities();
+        Task<List<AmenityDTO>> GetAmenities();
 
         /// <summary>
         /// GetAmenity - allows us to get a single amenity by ID
         /// </summary>
         /// <param name="id">the unique id of the amenity we want to get</param>
         /// <returns>the requested amenity object</returns>
-        Task<Amenity> GetAmenity(int id);
+        Task<AmenityDTO> GetAmenity(int id);
 
 
         // UPDATE

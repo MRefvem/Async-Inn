@@ -71,13 +71,13 @@ namespace AsyncInn.Controllers
         [Route("/api/Hotels/{hotelId}/Rooms")]
         // POST: {hotelId}/{roomId}/Rooms
         // Model Binding
-        public async Task<IActionResult> AddRoomToHotel(int hotelId, HotelRoom hotelRoom)
+        public async Task<ActionResult<HotelRoom>> AddRoomToHotel(int hotelId, HotelRoom hotelRoom)
         {
             if (hotelId != hotelRoom.HotelId)
             {
                 return BadRequest();
             }
-            await _hotelRooms.Create(hotelRoom);
+            await _hotelRooms.Create(hotelRoom, hotelId);
             return Ok();
         }
 
@@ -87,6 +87,11 @@ namespace AsyncInn.Controllers
         public async Task<ActionResult<HotelRoom>> GetRoomDetails(int hotelId, int roomNumber)
         {
             HotelRoom hotelRoom = await _hotelRooms.GetHotelRoom(hotelId, roomNumber);
+
+            if (hotelRoom == null)
+            {
+                return NotFound();
+            }
 
             return hotelRoom;
         }
