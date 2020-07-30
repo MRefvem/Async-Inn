@@ -69,7 +69,8 @@ namespace AsyncInn.Models.Services
         public async Task<HotelDTO> GetHotel(int id)
         {
             // look in the db on the hotels table where the id is equal to the one brought in as an argument
-            var hotel = await _context.Hotels.Include(x => x.HotelRooms).FirstOrDefaultAsync(x => x.Id == id);
+            var hotel = await _context.Hotels.Include(x => x.HotelRooms)
+                                            .FirstOrDefaultAsync(x => x.Id == id);
 
             HotelDTO dto = new HotelDTO
             {
@@ -78,8 +79,29 @@ namespace AsyncInn.Models.Services
                 StreetAddress = hotel.StreetAddress,
                 City = hotel.City,
                 State = hotel.State,
-                Phone = hotel.Phone
+                Phone = hotel.Phone,
+                
             };
+
+            List<HotelRoomDTO> hotelRoomList = new List<HotelRoomDTO>();
+
+            foreach (var hotelRoom in hotel.HotelRooms)
+            {
+                HotelRoomDTO newDTO = new HotelRoomDTO()
+                {
+                    HotelId = hotelRoom.HotelId,
+                    RoomNumber = hotelRoom.RoomNumber,
+                    Rate = hotelRoom.Rate,
+                    PetFriendly = hotelRoom.PetFriendly,
+                    RoomId = hotelRoom.RoomId,
+                };
+
+                hotelRoomList.Add(newDTO);
+
+            };
+
+            dto.Rooms = hotelRoomList;
+
 
             return dto;
         }

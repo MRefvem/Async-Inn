@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace AsyncInn.Models.Services
@@ -54,7 +55,16 @@ namespace AsyncInn.Models.Services
         /// <returns>the completed task - hotel room no longer exists</returns>
         public async Task Delete(int hotelId, int roomNumber)
         {
-            var hotelRoom = await GetHotelRoom(hotelId, roomNumber);
+            HotelRoomDTO dto = await GetHotelRoom(hotelId, roomNumber);
+
+            HotelRoom hotelRoom = new HotelRoom()
+            {
+                HotelId = dto.HotelId,
+                RoomId = dto.RoomId,
+                RoomNumber = dto.RoomNumber,
+                Rate = dto.Rate,
+                PetFriendly = dto.PetFriendly,
+            };
 
             _context.Entry(hotelRoom).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
@@ -79,20 +89,41 @@ namespace AsyncInn.Models.Services
             //hotelRoom.Room.RoomAmenities = roomAmenities;
 
             // EDIT FROM CLASS REPO: "MAGIC LINQ STUFF"
-            var room = await _context.HotelRooms.Where(x => x.HotelId == hotelId && x.RoomNumber == roomNumber)
+            var hotelRoom = await _context.HotelRooms.Where(x => x.HotelId == hotelId && x.RoomNumber == roomNumber)
                                                 .Include(x => x.Hotel)
                                                 .Include(x => x.Room)
                                                 .ThenInclude(x => x.RoomAmenities)
                                                 .ThenInclude(x => x.Amenity)
                                                 .FirstOrDefaultAsync();
 
+            List<AmenityDTO> amenityDTOs = new List<AmenityDTO>();
+
+            foreach (var roomAmenities in hotelRoom.Room.RoomAmenities)
+            {
+                AmenityDTO amenityDTO = new AmenityDTO()
+                {
+                    Id = roomAmenities.Amenity.Id,
+                    Name = roomAmenities.Amenity.Name,
+                };
+
+                amenityDTOs.Add(amenityDTO);
+            }
+
+            RoomDTO roomDTO = new RoomDTO()
+            {
+                Id = hotelRoom.Room.Id,
+                Name = hotelRoom.Room.Name,
+                Layout = hotelRoom.Room.Layout.ToString(),
+            };
+
             HotelRoomDTO dto = new HotelRoomDTO
             {
-                HotelId = room.HotelId,
-                RoomNumber = room.RoomNumber,
-                Rate = room.Rate,
-                PetFriendly = room.PetFriendly,
-                RoomId = room.RoomId,
+                HotelId = hotelRoom.HotelId,
+                RoomNumber = hotelRoom.RoomNumber,
+                Rate = hotelRoom.Rate,
+                PetFriendly = hotelRoom.PetFriendly,
+                RoomId = hotelRoom.RoomId,
+                Room = roomDTO,
             };
 
             return dto;
@@ -107,6 +138,8 @@ namespace AsyncInn.Models.Services
         {
             var hotelRooms = await _context.HotelRooms.Where(x => x.HotelId == hotelId)
                                                         .Include(x => x.Room)
+                                                        .ThenInclude(x => x.RoomAmenities)
+                                                        .ThenInclude(x => x.Amenity)
                                                         .ToListAsync();
 
             List<HotelRoomDTO> dtos = new List<HotelRoomDTO>();

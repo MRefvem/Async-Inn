@@ -292,8 +292,6 @@ C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncI
 C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.AssemblyInfoInputs.cache
 C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.AssemblyInfo.cs
-C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.csproj.CoreCompileInputs.cache
-C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.RazorTargetAssemblyInfo.cache
 C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.csproj.CopyComplete
 C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\staticwebassets\AsyncInn.StaticWebAssets.Manifest.cache
@@ -302,3 +300,14 @@ C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncI
 C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.pdb
 C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.genruntimeconfig.cache
 C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.csprojAssemblyReference.cache
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.json
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.local.json
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.csproj.CoreCompileInputs.cache
+C:\Users\mkref\source\repos\Lab-Hotel-Asset-Management\Async-Inn\AsyncInn\AsyncInn\obj\Debug\netcoreapp3.1\AsyncInn.MvcApplicationPartsAssemblyInfo.cache

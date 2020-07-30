@@ -80,7 +80,7 @@ namespace AsyncInn.Models.Services
 
             var room = await _context.Rooms.Where(x => x.Id == id)
                                             .Include(x => x.RoomAmenities)
-                                            //.ThenInclude(x => x.Amenity)
+                                            .ThenInclude(x => x.Amenity)
                                             .FirstOrDefaultAsync();
 
             RoomDTO dto = new RoomDTO

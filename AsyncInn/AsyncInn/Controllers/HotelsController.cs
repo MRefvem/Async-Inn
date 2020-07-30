@@ -83,6 +83,7 @@ namespace AsyncInn.Controllers
         }
 
         // Get all room details for a specific room
+        // For roomNumber, try 101
         [HttpGet]
         [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
         public async Task<ActionResult<HotelRoomDTO>> GetRoomDetails(int hotelId, int roomNumber)
