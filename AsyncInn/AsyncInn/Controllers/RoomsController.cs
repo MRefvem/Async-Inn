@@ -78,12 +78,12 @@ namespace AsyncInn.Controllers
         /// <param name="amenityId"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("{roomId}/{amenityId}")]
-        // POST: {roomId}/{amenityId}
+        [Route("{roomId}/amenity/{amenityId}")]
+        // POST: {roomId}/amenity/{amenityId}
         // Model Binding
         public async Task<IActionResult> AddAmenityToRoom(int roomId, int amenityId)
         {
-            await _room.AddAmenity(amenityId, roomId);
+            await _room.AddAmenity(roomId, amenityId);
             return Ok();
         }
 
@@ -94,7 +94,7 @@ namespace AsyncInn.Controllers
         /// <param name="amenityId"></param>
         /// <returns></returns>
         [HttpDelete]
-        [Route("{roomId}/{amenityId}")]
+        [Route("{roomId}/amenity/{amenityId}")]
         public async Task<IActionResult> RemoveAmenityfromRoom(int roomId, int amenityId)
         {
             await _room.RemoveAmenityFromRoom(roomId, amenityId);
