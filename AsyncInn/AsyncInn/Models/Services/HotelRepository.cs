@@ -14,10 +14,12 @@ namespace AsyncInn.Models.Services
     public class HotelRepository : IHotel
     {
         private AsyncInnDbContext _context;
+        private IHotelRoom _hotelRoom;
 
-        public HotelRepository(AsyncInnDbContext context)
+        public HotelRepository(AsyncInnDbContext context, IHotelRoom hotelRoom)
         {
             _context = context;
+            _hotelRoom = hotelRoom;
         }
 
         /// <summary>
@@ -69,8 +71,11 @@ namespace AsyncInn.Models.Services
         public async Task<HotelDTO> GetHotel(int id)
         {
             // look in the db on the hotels table where the id is equal to the one brought in as an argument
-            var hotel = await _context.Hotels.Include(x => x.HotelRooms)
-                                            .FirstOrDefaultAsync(x => x.Id == id);
+            var hotel = await _context.Hotels.Include(h => h.HotelRooms)
+                                                .ThenInclude(hr => hr.Room)
+                                                .ThenInclude(r => r.RoomAmenities)
+                                                .ThenInclude(ar => ar.Amenity)
+                                                .FirstOrDefaultAsync(h => h.Id == id);
 
             HotelDTO dto = new HotelDTO
             {
@@ -79,25 +84,16 @@ namespace AsyncInn.Models.Services
                 StreetAddress = hotel.StreetAddress,
                 City = hotel.City,
                 State = hotel.State,
-                Phone = hotel.Phone,
-                
+                Phone = hotel.Phone,   
             };
 
             List<HotelRoomDTO> hotelRoomList = new List<HotelRoomDTO>();
 
+
+
             foreach (var hotelRoom in hotel.HotelRooms)
             {
-                HotelRoomDTO newDTO = new HotelRoomDTO()
-                {
-                    HotelId = hotelRoom.HotelId,
-                    RoomNumber = hotelRoom.RoomNumber,
-                    Rate = hotelRoom.Rate,
-                    PetFriendly = hotelRoom.PetFriendly,
-                    RoomId = hotelRoom.RoomId,
-                };
-
-                hotelRoomList.Add(newDTO);
-
+                hotelRoomList.Add(await _hotelRoom.GetHotelRoom(id, hotelRoom.RoomNumber));
             };
 
             dto.Rooms = hotelRoomList;
