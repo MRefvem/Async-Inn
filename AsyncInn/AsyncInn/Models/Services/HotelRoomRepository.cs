@@ -24,7 +24,7 @@ namespace AsyncInn.Models.Services
         /// </summary>
         /// <param name="hotelRoom">the hotel room object we want created</param>
         /// <returns>the completed task of creating the hotel room</returns>
-        public async Task<HotelRoomDTO> Create(HotelRoomDTO hotelRoom, int hotelId)
+        public async Task<HotelRoomDTO> Create(HotelRoomDTO hotelRoomDTO, int hotelId)
         {
 
             // Convert the DTO to an actual amenity
@@ -32,19 +32,20 @@ namespace AsyncInn.Models.Services
             HotelRoom entity = new HotelRoom()
             {
                 HotelId = hotelId,
-                RoomNumber = hotelRoom.RoomNumber,
-                Rate = hotelRoom.Rate,
-                PetFriendly = hotelRoom.PetFriendly,
-                RoomId = hotelRoom.RoomId,
+                RoomNumber = hotelRoomDTO.RoomNumber,
+                Rate = hotelRoomDTO.Rate,
+                PetFriendly = hotelRoomDTO.PetFriendly,
+                RoomId = hotelRoomDTO.RoomId,
             };
 
-            hotelRoom.HotelId = hotelId;
+            hotelRoomDTO.HotelId = hotelId;
             // When I have a room, I want to add them to the DB
-            _context.Entry(hotelRoom).State = EntityState.Added;
+            // Can only pass in entities to the DB, NOT DTOs
+            _context.Entry(entity).State = EntityState.Added;
             // The hotel gets saved here and then associated with an id
             await _context.SaveChangesAsync();
 
-            return hotelRoom;
+            return hotelRoomDTO;
         }
 
         /// <summary>
@@ -114,6 +115,7 @@ namespace AsyncInn.Models.Services
                 Id = hotelRoom.Room.Id,
                 Name = hotelRoom.Room.Name,
                 Layout = hotelRoom.Room.Layout.ToString(),
+                Amenities = amenityDTOs,
             };
 
             HotelRoomDTO dto = new HotelRoomDTO

@@ -1,4 +1,5 @@
 ﻿using AsyncInn.Models;
+using AsyncInn.Models.DTOs;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -109,6 +110,6 @@ namespace AsyncInn.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<RoomAmenities> RoomAmenities { get; set; }
-        public DbSet<AsyncInn.Models.HotelRoom> HotelRooms { get; set; }
+        public DbSet<HotelRoom> HotelRooms { get; set; }
     }
 }
