@@ -14,9 +14,9 @@ namespace AsyncInn.Models
 
     public static class ApplicationRoles
     {
-        public const string Principal = "Principal";
-        public const string Advisor = "Advisor";
-        public const string Teacher = "Teacher";
-        public const string Student = "Student";
+        public const string DistrictManager = "District Manager";
+        public const string PropertyManager = "Property Manager";
+        public const string CustomerAgent = "Customer Agent";
+        public const string Customer = "Customer";
     }
 }

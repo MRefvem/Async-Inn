@@ -9,9 +9,11 @@ using AsyncInn.Data;
 using AsyncInn.Models;
 using AsyncInn.Models.Interfaces;
 using AsyncInn.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AsyncInn.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class HotelsController : ControllerBase
@@ -27,6 +29,7 @@ namespace AsyncInn.Controllers
 
         // GET: api/Hotels
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<HotelDTO>>> GetHotels()
         {
             return await _hotel.GetHotels();
@@ -34,6 +37,7 @@ namespace AsyncInn.Controllers
 
         // GET: api/Hotels/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<HotelDTO>> GetHotel(int id)
         {
             HotelDTO hotel = await _hotel.GetHotel(id);
@@ -45,6 +49,7 @@ namespace AsyncInn.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(Policy = "MaxPrivileges")]
         public async Task<IActionResult> PutHotel(int id, Hotel hotel)
         {
             if (id != hotel.Id)
@@ -61,6 +66,7 @@ namespace AsyncInn.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Policy = "MaxPrivileges")]
         public async Task<ActionResult<HotelDTO>> PostHotel(HotelDTO hotel)
         {
             await _hotel.Create(hotel);
@@ -72,6 +78,7 @@ namespace AsyncInn.Controllers
         [Route("/api/Hotels/{hotelId}/Rooms")]
         // POST: {hotelId}/{roomId}/Rooms
         // Model Binding
+        [Authorize(Policy = "ElevatedPrivileges")]
         public async Task<ActionResult<HotelRoomDTO>> AddRoomToHotel(int hotelId, HotelRoomDTO hotelRoomDTO)
         {
             if (hotelId != hotelRoomDTO.HotelId)
@@ -86,6 +93,7 @@ namespace AsyncInn.Controllers
         // For roomNumber, try 101
         [HttpGet]
         [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
+        [Authorize(Policy = "NormalPrivileges")]
         public async Task<ActionResult<HotelRoomDTO>> GetRoomDetails(int hotelId, int roomNumber)
         {
             var hotelRoom = await _hotelRooms.GetHotelRoom(hotelId, roomNumber);
@@ -101,6 +109,7 @@ namespace AsyncInn.Controllers
         // Get all details for every room in a hotel
         [HttpGet]
         [Route("/api/Hotels/{hotelId}/Rooms")]
+        [Authorize(Policy = "NormalPrivileges")]
         public async Task<ActionResult<List<HotelRoomDTO>>> GetAllRoomDetails(int hotelId)
         {
             List<HotelRoomDTO> hotelRooms = await _hotelRooms.GetAllHotelRooms(hotelId);
@@ -111,6 +120,7 @@ namespace AsyncInn.Controllers
         // Put update the details of a specific room
         [HttpPut]
         [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
+        [Authorize(Policy = "NormalPrivileges")]
         public async Task<ActionResult<HotelRoom>> UpdateRoomDetails(int hotelId, int roomNumber, HotelRoom hotelRoom)
         {
             // check
@@ -127,6 +137,7 @@ namespace AsyncInn.Controllers
 
         [HttpDelete]
         [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
+        [Authorize(Policy = "MaxPrivileges")]
         public async Task<ActionResult<HotelRoom>> DeleteHotelRoom(int hotelId, int roomNumber)
         {
             await _hotelRooms.Delete(hotelId, roomNumber);
@@ -135,6 +146,7 @@ namespace AsyncInn.Controllers
 
         // DELETE: api/Hotels/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = "MaxPrivileges")]
         public async Task<ActionResult> DeleteHotel(int id)
         {
             await _hotel.Delete(id);

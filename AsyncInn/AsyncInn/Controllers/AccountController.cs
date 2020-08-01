@@ -39,6 +39,7 @@ namespace AsyncInn.Controllers
         /// <returns>The completed action - registered user</returns>
         // api/account/register
         [HttpPost,Route("register")]
+        [Authorize(Policy = "ElevatedPrivileges")]
         public async Task<ActionResult> Register(RegisterDTO register)
         {
             ApplicationUser user = new ApplicationUser()
@@ -56,12 +57,26 @@ namespace AsyncInn.Controllers
             {
                 if (user.Email == _config["PrincipalSeed"])
                 {
-                    register.Role = ApplicationRoles.Principal;
-                    await _userManager.AddToRoleAsync(user, ApplicationRoles.Principal);
+                    register.Role = ApplicationRoles.DistrictManager;
+                    await _userManager.AddToRoleAsync(user, ApplicationRoles.DistrictManager);
                 }
                 else
                 {
-                    await _userManager.AddToRoleAsync(user, register.Role);
+                    if (User.IsInRole("Property Manager"))
+                    {
+                        if (register.Role == ApplicationRoles.CustomerAgent)
+                        {
+                            await _userManager.AddToRoleAsync(user, register.Role);
+                        }
+                        else
+                        {
+                            return BadRequest();
+                        }
+                    }
+                    else if (User.IsInRole("District Manager"))
+                    {
+                        await _userManager.AddToRoleAsync(user, register.Role);
+                    }
                 }
                 // sign in if it was successful
 
@@ -123,12 +138,13 @@ namespace AsyncInn.Controllers
         /// <param name="assignment">The assignment parameter of the user</param>
         /// <returns>The completed task - the user has a role</returns>
         [HttpPost, Route("assign/role")]
-        [Authorize(Policy="ElevatedPrivileges")]
+        [AllowAnonymous]
+        //[Authorize(Policy="ElevatedPrivileges")]
         public async Task AssignRoleToUser(AssignRoleDTO assignment)
         {
             var user = await _userManager.FindByEmailAsync(assignment.Email);
             // validation here to confirm the role is valid
-            
+
             //string role = "";
 
             //if(assignment.Role.ToUpper == "ADVISOR")
@@ -140,8 +156,37 @@ namespace AsyncInn.Controllers
             // property managers can create rooms
             // customer agents can add amenities
             // customers can only view
+            string assignedRole = GetRole(assignment);
 
-            await _userManager.AddToRoleAsync(user, assignment.Role);
+            await _userManager.AddToRoleAsync(user, assignedRole);
+        }
+
+        /// <summary>
+        /// GetRole - Method. Paul Rest helped me find this solution.
+        /// </summary>
+        /// <param name="registerDTO">Passing in an object of RegisterDTO</param>
+        /// <returns>A string with the assigned role</returns>
+        private string GetRole(AssignRoleDTO assignRoleDTO)
+        {
+            string role = "";
+            switch (assignRoleDTO.Role.ToLower())
+            {
+                case "district manager":
+                    role = ApplicationRoles.DistrictManager;
+                    break;
+                case "property manager":
+                    role = ApplicationRoles.PropertyManager;
+                    break;
+                case "customer agent":
+                    role = ApplicationRoles.CustomerAgent;
+                    break;
+                case "customer":
+                    role = ApplicationRoles.Customer;
+                    break;
+                default:
+                    break;
+            }
+            return role;
         }
 
         /// <summary>

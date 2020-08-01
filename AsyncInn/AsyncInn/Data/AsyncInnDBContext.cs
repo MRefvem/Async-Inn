@@ -26,7 +26,7 @@ namespace AsyncInn.Data
             base.OnModelCreating(modelBuilder);
             // this tells the db that RoomAmenities table has a combination composite key of the roomid and amenityid
             modelBuilder.Entity<RoomAmenities>().HasKey(x => new { x.RoomId, x.AmenityId });
-            
+
             modelBuilder.Entity<HotelRoom>().HasKey(x => new { x.HotelId, x.RoomNumber });
 
             modelBuilder.Entity<Hotel>().HasData(

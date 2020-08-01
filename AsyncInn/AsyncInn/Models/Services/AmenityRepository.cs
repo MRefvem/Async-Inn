@@ -47,7 +47,13 @@ namespace AsyncInn.Models.Services
         /// <returns>the task complete - the amenity was deleted</returns>
         public async Task Delete(int Id)
         {
-            var amenity = await GetAmenity(Id);
+            AmenityDTO amenityDTO = await GetAmenity(Id);
+
+            Amenity amenity = new Amenity()
+            {
+                Id = amenityDTO.Id,
+                Name = amenityDTO.Name,
+            };
 
             _context.Entry(amenity).State = EntityState.Deleted;
             await _context.SaveChangesAsync();

@@ -81,8 +81,9 @@ namespace AsyncInn
             // Add my policies
             services.AddAuthorization( options =>
             {
-                options.AddPolicy("ElevatedPrivileges", policy => policy.RequireRole(ApplicationRoles.Principal, ApplicationRoles.Advisor));
-                options.AddPolicy("ColorPolicy", policy => policy.RequireClaim("FavoriteColor"));
+                options.AddPolicy("MaxPrivileges", policy => policy.RequireRole(ApplicationRoles.DistrictManager));
+                options.AddPolicy("ElevatedPrivileges", policy => policy.RequireRole(ApplicationRoles.DistrictManager, ApplicationRoles.PropertyManager));
+                options.AddPolicy("NormalPrivileges", policy => policy.RequireClaim(ApplicationRoles.DistrictManager, ApplicationRoles.PropertyManager, ApplicationRoles.CustomerAgent));
             });
 
             // register my Dependency Injection Services
