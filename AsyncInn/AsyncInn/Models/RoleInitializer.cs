@@ -16,10 +16,10 @@ namespace AsyncInn.Models
 
         private static readonly List<IdentityRole> Roles = new List<IdentityRole>()
         {
-            new IdentityRole{Name = ApplicationRoles.Principal, NormalizedName = ApplicationRoles.Principal.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
-            new IdentityRole{Name = ApplicationRoles.Advisor, NormalizedName = ApplicationRoles.Advisor.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
-            new IdentityRole{Name = ApplicationRoles.Teacher, NormalizedName = ApplicationRoles.Teacher.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
-            new IdentityRole{Name = ApplicationRoles.Student, NormalizedName = ApplicationRoles.Student.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+            new IdentityRole{Name = ApplicationRoles.DistrictManager, NormalizedName = ApplicationRoles.DistrictManager.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+            new IdentityRole{Name = ApplicationRoles.PropertyManager, NormalizedName = ApplicationRoles.PropertyManager.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+            new IdentityRole{Name = ApplicationRoles.CustomerAgent, NormalizedName = ApplicationRoles.CustomerAgent.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
+            new IdentityRole{Name = ApplicationRoles.Customer, NormalizedName = ApplicationRoles.Customer.ToUpper(), ConcurrencyStamp = Guid.NewGuid().ToString() },
         };
 
         // method that create
@@ -48,7 +48,7 @@ namespace AsyncInn.Models
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, ApplicationRoles.Principal).Wait();
+                    userManager.AddToRoleAsync(user, ApplicationRoles.DistrictManager).Wait();
                 }
             }
         }
