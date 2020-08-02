@@ -42,7 +42,7 @@ namespace AsyncInn.Models.Services
             };
 
             // When I have a hotel, I want to add them to the DB
-            _context.Entry(hotel).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+            _context.Entry(entity).State = EntityState.Added;
             // The hotel gets saved here and then associated with an id
             await _context.SaveChangesAsync();
 
@@ -56,10 +56,20 @@ namespace AsyncInn.Models.Services
         /// <returns>the deleted hotel object</returns>
         public async Task Delete(int Id)
         {
-            HotelDTO hotel = await GetHotel(Id);
+            //HotelDTO hotel = await GetHotel(Id);
 
-            _context.Entry(hotel).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            Hotel hotel = await _context.Hotels.FindAsync(Id);
+
+            if (hotel == null)
+            {
+                return;
+            }
+            else
+            {
+                _context.Entry(hotel).State = EntityState.Deleted;
+                await _context.SaveChangesAsync();     
+            }
+
 
         }
 
@@ -77,29 +87,35 @@ namespace AsyncInn.Models.Services
                                                 .ThenInclude(ar => ar.Amenity)
                                                 .FirstOrDefaultAsync(h => h.Id == id);
 
-            HotelDTO dto = new HotelDTO
+            if (hotel == null)
             {
-                Id = hotel.Id,
-                Name = hotel.Name,
-                StreetAddress = hotel.StreetAddress,
-                City = hotel.City,
-                State = hotel.State,
-                Phone = hotel.Phone,   
-            };
-
-            List<HotelRoomDTO> hotelRoomList = new List<HotelRoomDTO>();
-
-
-
-            foreach (var hotelRoom in hotel.HotelRooms)
+                return null;
+            }
+            else
             {
-                hotelRoomList.Add(await _hotelRoom.GetHotelRoom(id, hotelRoom.RoomNumber));
-            };
+                HotelDTO dto = new HotelDTO
+                {
+                    Id = hotel.Id,
+                    Name = hotel.Name,
+                    StreetAddress = hotel.StreetAddress,
+                    City = hotel.City,
+                    State = hotel.State,
+                    Phone = hotel.Phone,   
+                };
 
-            dto.Rooms = hotelRoomList;
+                List<HotelRoomDTO> hotelRoomList = new List<HotelRoomDTO>();
+
+                foreach (var hotelRoom in hotel.HotelRooms)
+                {
+                    hotelRoomList.Add(await _hotelRoom.GetHotelRoom(id, hotelRoom.RoomNumber));
+                };
+
+                dto.Rooms = hotelRoomList;
 
 
-            return dto;
+                return dto;
+            }
+
         }
 
         /// <summary>

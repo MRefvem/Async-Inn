@@ -54,10 +54,19 @@ namespace AsyncInn.Models.Services
         /// <returns>the completed task</returns>
         public async Task Delete(int Id)
         {
-            var room = await GetRoom(Id);
+            //var room = await GetRoom(Id);
 
-            _context.Entry(room).State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            Room room = await _context.Rooms.FindAsync(Id);
+
+            if (room == null)
+            {
+                return;
+            }
+            else
+            {
+                _context.Entry(room).State = EntityState.Deleted;
+                await _context.SaveChangesAsync();
+            }
 
         }
 
@@ -83,22 +92,30 @@ namespace AsyncInn.Models.Services
                                             .ThenInclude(x => x.Amenity)
                                             .FirstOrDefaultAsync();
 
-            RoomDTO dto = new RoomDTO
+            if (room == null)
             {
-                Name = room.Name,
-                Layout = room.Layout.ToString(),
-                Id = room.Id
-            };
-
-            dto.Amenities = new List<AmenityDTO>();
-
-            foreach (var item in room.RoomAmenities)
+                return null;
+            }
+            else
             {
-                dto.Amenities.Add(await _amenities.GetAmenity(item.AmenityId));
+                RoomDTO dto = new RoomDTO
+                {
+                    Name = room.Name,
+                    Layout = room.Layout.ToString(),
+                    Id = room.Id
+                };
+
+                dto.Amenities = new List<AmenityDTO>();
+
+                foreach (var item in room.RoomAmenities)
+                {
+                    dto.Amenities.Add(await _amenities.GetAmenity(item.AmenityId));
+                }
+
+                //room.RoomAmenities = roomAmenities;
+                return dto;
             }
 
-            //room.RoomAmenities = roomAmenities;
-            return dto;
         }
 
         /// <summary>
