@@ -70,9 +70,26 @@ Identity is the concept of creating user accounts and authentication. ASP.NET Co
 
 This application has a class, ApplicationUser, that enables the application to take in user information and register an account that the user can login to later with their credentials.
 
+### Authorization and how it's used in this Application
+Authorization is the ability to add permission layers to different operations in an application. Certain users will be granted roles with higher levels of authorizations than others. For the same reasons you would never let your customers be in charge of creating new entities in your business, the same rules apply in relation to these authorization roles.
+
+The four roles contained within this app are:
+- District Manager: District manager can do full CRUD operations on all Hotel, HotelRoom, Room, and Amenity entities. The district manager can create accounts for all other roles.
+- Property Manager: Property managers can add/upp/read new HotelRooms to hotels, and amenities to rooms. A property manager cannot create new room entities or hotel entities. The property manager can only create accounts for agents.
+- Customer Agent: an agent can only update/read a HotelRoom and add/delete amentities to rooms.
+- Customer: anonymous users can only view all hotel information DTO.
+
+There are three Application Role Policies:
+- [Authorize(Policy = "MaxPrivileges")]: operations only the District Manager has access to.
+- [Authorize(Policy = "ElevatedPrivileges")]: operations only the District Manager and Property Manager have access to.
+- [Authorize(Policy = "NormalPrivileges")]: operations only the District Manager, Property Manager and Customer Agent have access to.
+
+For operations that allow all users, we use the [AllowAnonymous] access layer.
+
 ---
 
 ### Change Log 
+7.0: *Added new roles to the application: District Manager, Property Manager, Customer Agent and Customer. Application users can perform different tasks based on their assigned roles and have the ability to register and login with accounts. When a user logs into their account, the server returns a JTW token that indicates the user's role and with that their abilities. Unit tests written/passing for the Amenities routes, covering all of the public methods.* - 1 Aug 2020
 6.0: *Created new class, ApplicationUser. Updated AsyncInnDBContext to read ApplicationUser and derive from Identity. Updated database to integrate Identity tables. Registered Identity into Startup file "services.AddIdentity...". Created an Account Controller and added both Register and Login actions. Confirmed that you can register a user successfully in the database. Confirmed that you can login with the credentials of an existing user.* - 28 Jul 2020
 5.0: *Added Data Transfer Objects (DTOs) for all four services. Updated all Controllers and Repositories to read from the DTOs.* - 27 Jul 2020
 4.0: *Built navigation properties and routes. Created new interfaces, services and tables for RoomAmenities and HotelRooms. Added the ability to add and remove amenities to a specific room. Satisfied CRUD requirements. README updated.* - 23 Jul 2020
