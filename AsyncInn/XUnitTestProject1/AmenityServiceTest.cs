@@ -19,6 +19,24 @@ namespace XUnitTestProject1
         // needs a method that turns our dto into an actual amenity
 
         [Fact]
+        public async Task CanCheckIfThereAreNoAmenities()
+        {
+            // arrange
+            var service = BuildRepository();
+
+            await service.Delete(1);
+            await service.Delete(2);
+            await service.Delete(3);
+
+            // act
+            List<AmenityDTO> result = await service.GetAmenities();
+
+            // assert
+            Assert.Empty(result);
+
+        }
+
+        [Fact]
         public async Task CanSaveAndGetAmenity()
         {
             // arrange
@@ -137,52 +155,53 @@ namespace XUnitTestProject1
 
         }
 
-        // update amenity
-        //[Fact]
-        //public async Task UpdateAmenity()
-        //{
+       //update amenity
+       [Fact]
+        public async Task UpdateAmenity()
+        {
             // arrange
-            //var amenity = new AmenityDTO
-            //{
-            //    Name = "BreakfastMachine",
-            //};
+           var amenity = new AmenityDTO
+           {
+               Name = "BreakfastMachine",
+           };
 
-            //var amenity2 = new AmenityDTO
-            //{
-            //    Name = "LunchMachine",
-            //};
+            var amenity2 = new AmenityDTO
+            {
+                Name = "LunchMachine",
+            };
 
-            //var amenity3 = new AmenityDTO
-            //{
-            //    Name = "DinnerMachine",
-            //};
+            var amenity3 = new AmenityDTO
+            {
+                Name = "DinnerMachine",
+            };
 
-            //var amenity4 = new AmenityDTO
-            //{
-            //    Name = "DessertMachine",
-            //};
+            var amenity4 = new AmenityDTO
+            {
+                Name = "DessertMachine",
+            };
 
-            //var amenity = new Amenity
-            //{
-            //    Id = 1,
-            //    Name = "Toaster",
-            //};
+            var updateAmenityInDB = new Amenity
+            {
+                Id = 1,
+                Name = "Mini Fridge",
+            };
 
-            //var service = BuildRepository();
+            var service = BuildRepository();
 
-            //var saved = await service.Create(amenity);
-            //var saved2 = await service.Create(amenity2);
-            //var saved3 = await service.Create(amenity3);
-            //var saved4 = await service.Create(amenity4);
+            var saved = await service.Create(amenity);
+            var saved2 = await service.Create(amenity2);
+            var saved3 = await service.Create(amenity3);
+            var saved4 = await service.Create(amenity4);
 
             // act
-            //Task<Amenity> result = await service.Update(amenity);
+            Amenity result = await service.Update(updateAmenityInDB);
 
 
-            //// assert
-        //    //Assert.NotEqual("Microwave", result);
+            // assert
+            Assert.Equal("Mini Fridge", result.Name);
+            Assert.NotEqual("Toaster", result.Name);
 
-        //}
+        }
 
         // delete amenity
         [Fact]
@@ -216,13 +235,33 @@ namespace XUnitTestProject1
             var saved3 = await service.Create(amenity3);
             var saved4 = await service.Create(amenity4);
 
-            // act
+            // act & assert
+            List<AmenityDTO> result = await service.GetAmenities();
+            Assert.Equal(7, result.Count);
             await service.Delete(1);
+            List<AmenityDTO> result2 = await service.GetAmenities();
+            Assert.Equal(6, result2.Count);
+
+        }
+
+        [Fact]
+        public async Task CannotDeleteFromAnEmptyTable()
+        {
+            // arrange
+            var service = BuildRepository();
+
+            await service.Delete(1);
+            await service.Delete(2);
+            await service.Delete(3);
+            // list is now empty
+
+            // act
             List<AmenityDTO> result = await service.GetAmenities();
 
-
             // assert
-            Assert.Equal(6, result.Count);
+            await service.Delete(4);
+            Assert.Empty(result);
+
 
         }
     }

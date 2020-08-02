@@ -47,16 +47,26 @@ namespace AsyncInn.Models.Services
         /// <returns>the task complete - the amenity was deleted</returns>
         public async Task Delete(int Id)
         {
-            AmenityDTO amenityDTO = await GetAmenity(Id);
+            // THIS DOES NOT WORK
+            //AmenityDTO amenityDTO = await GetAmenity(Id);
 
-            Amenity amenity = new Amenity()
+            //Amenity amenity = new Amenity()
+            //{
+            //    Id = amenityDTO.Id,
+            //    Name = amenityDTO.Name,
+            //};
+
+            Amenity amenity = await _context.Amenities.FindAsync(Id);
+
+            if (amenity == null)
             {
-                Id = amenityDTO.Id,
-                Name = amenityDTO.Name,
-            };
-
-            _context.Entry(amenity).State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
+                return;
+            }
+            else
+            {
+                _context.Entry(amenity).State = EntityState.Deleted;
+                await _context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
@@ -90,15 +100,24 @@ namespace AsyncInn.Models.Services
             var roomAmenities = await _context.RoomAmenities.Where(x => x.AmenityId == id)
                                                             .Include(x => x.Room)
                                                             .ToListAsync();
-            amenity.RoomAmenities = roomAmenities;
 
-            AmenityDTO dto = new AmenityDTO()
+            if (amenity == null)
             {
-                Id = amenity.Id,
-                Name = amenity.Name
-            };
+                return null;
+            }
+            else
+            {
+                amenity.RoomAmenities = roomAmenities;
 
-            return dto;
+                AmenityDTO dto = new AmenityDTO()
+                {
+                    Id = amenity.Id,
+                    Name = amenity.Name
+                };
+
+                return dto;
+            }
+
         }
 
         /// <summary>
@@ -108,10 +127,17 @@ namespace AsyncInn.Models.Services
         /// <returns>the updated amenity object</returns>
         public async Task<Amenity> Update(Amenity amenity)
         {
-            _context.Entry(amenity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            if (amenity == null)
+            {
+                throw new Exception("amenity was null");
+            }
+            else
+            {
+                _context.Entry(amenity).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
 
-            return amenity;
+                return amenity;
+            }
         }
     }
 }
